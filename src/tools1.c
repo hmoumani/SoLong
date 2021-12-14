@@ -15,4 +15,5 @@
 void    fatal()
 {
     printf("%s %s", Error, strerror(errno));
+    exit(1);
 }
