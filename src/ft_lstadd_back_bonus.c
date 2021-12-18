@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools1.c                                           :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 23:33:00 by hmoumani          #+#    #+#             */
-/*   Updated: 2021/12/14 23:33:01 by hmoumani         ###   ########.fr       */
+/*   Created: 2019/11/01 00:37:40 by hmoumani          #+#    #+#             */
+/*   Updated: 2019/11/03 00:24:38 by hmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void    fatal(const char * const str)
+void	ft_lstadd_back(t_list **alst, t_list *new)
 {
-    if (str)
-        printf("%s%s\n", ERROR, str);
-    else
-        printf("%s %s\n", ERROR, strerror(errno));
-    exit(1);
-}
+	t_list *last;
 
-void    *ft_malloc(size_t size)
-{
-    void *p;
-
-    p = malloc(size);
-    if (p == NULL)
-        fatal("malloc failed");
-    return (p);
+	if (*alst == NULL)
+		*alst = new;
+	else if (alst)
+	{
+		last = ft_lstlast(*alst);
+		last->next = new;
+	}
 }

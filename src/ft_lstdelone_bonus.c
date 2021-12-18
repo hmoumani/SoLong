@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools1.c                                           :+:      :+:    :+:   */
+/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 23:33:00 by hmoumani          #+#    #+#             */
-/*   Updated: 2021/12/14 23:33:01 by hmoumani         ###   ########.fr       */
+/*   Created: 2019/11/01 22:21:41 by hmoumani          #+#    #+#             */
+/*   Updated: 2019/11/01 23:40:30 by hmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void    fatal(const char * const str)
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-    if (str)
-        printf("%s%s\n", ERROR, str);
-    else
-        printf("%s %s\n", ERROR, strerror(errno));
-    exit(1);
-}
-
-void    *ft_malloc(size_t size)
-{
-    void *p;
-
-    p = malloc(size);
-    if (p == NULL)
-        fatal("malloc failed");
-    return (p);
+	if (lst && del)
+	{
+		(*del)(lst->content);
+		free(lst);
+	}
 }

@@ -20,6 +20,8 @@
 char	*ft_strdup(char *s);
 int		ft_strlen_(char *s);
 int		ft_double_free(char **p1, char **p2, int ret);
-int		get_next_line(char **line);
+int		get_next_line(char **line, int fd);
+void    *ft_malloc(size_t size);
+void    fatal(const char *const str);
 
 #endif

@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools1.c                                           :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 23:33:00 by hmoumani          #+#    #+#             */
-/*   Updated: 2021/12/14 23:33:01 by hmoumani         ###   ########.fr       */
+/*   Created: 2019/10/31 19:51:58 by hmoumani          #+#    #+#             */
+/*   Updated: 2019/11/02 01:30:06 by hmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void    fatal(const char * const str)
+t_list	*ft_lstnew(void *content)
 {
-    if (str)
-        printf("%s%s\n", ERROR, str);
-    else
-        printf("%s %s\n", ERROR, strerror(errno));
-    exit(1);
-}
+	t_list *new;
 
-void    *ft_malloc(size_t size)
-{
-    void *p;
-
-    p = malloc(size);
-    if (p == NULL)
-        fatal("malloc failed");
-    return (p);
+	if (!(new = (t_list*)ft_malloc(sizeof(t_list))))
+		fatal(NULL);
+	if (!new)
+		return (new);
+	new->content = content;
+	new->next = NULL;
+	return (new);
 }

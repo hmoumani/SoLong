@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools1.c                                           :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 23:33:00 by hmoumani          #+#    #+#             */
-/*   Updated: 2021/12/14 23:33:01 by hmoumani         ###   ########.fr       */
+/*   Created: 2019/11/01 00:23:41 by hmoumani          #+#    #+#             */
+/*   Updated: 2019/11/01 00:52:35 by hmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void    fatal(const char * const str)
+int	ft_lstsize(t_list *lst)
 {
-    if (str)
-        printf("%s%s\n", ERROR, str);
-    else
-        printf("%s %s\n", ERROR, strerror(errno));
-    exit(1);
-}
+	int		i;
+	t_list	*curr;
 
-void    *ft_malloc(size_t size)
-{
-    void *p;
-
-    p = malloc(size);
-    if (p == NULL)
-        fatal("malloc failed");
-    return (p);
+	curr = lst;
+	i = 0;
+	while (curr != NULL)
+	{
+		curr = curr->next;
+		i++;
+	}
+	return (i);
 }

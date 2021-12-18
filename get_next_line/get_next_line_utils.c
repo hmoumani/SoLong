@@ -14,8 +14,16 @@
 
 int	ft_double_free(char **p1, char **p2, int ret)
 {
-	free(*p1);
-	free(*p2);
+	if (p1)
+	{
+		free(*p1);
+		*p1 = NULL;
+	}
+	if (p2)
+	{
+		free(*p2);
+		*p2 = NULL;
+	}
 	return (ret);
 }
 
@@ -39,7 +47,7 @@ char	*ft_strdup(char *s)
 
 	i = 0;
 	len = ft_strlen_(s);
-	p = malloc (len + 1);
+	p = ft_malloc (len + 1);
 	while (s[i])
 	{
 		p[i] = s[i];

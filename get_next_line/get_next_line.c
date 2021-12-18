@@ -40,7 +40,7 @@ static	char	*ft_strjoin(char *s1, char *s2)
 	j = 0;
 	len1 = ft_strlen_(s1);
 	len2 = ft_strlen_(s2);
-	p = malloc (len1 + len2 + 1);
+	p = ft_malloc (len1 + len2 + 1);
 	while (i < len1 + len2)
 	{
 		if (i < len1)
@@ -53,7 +53,7 @@ static	char	*ft_strjoin(char *s1, char *s2)
 	return (p);
 }
 
-int	rest_(char *p, char **rest, char **line)
+int	rest_(char *p, char **rest, char **line, int fd)
 {
 	char		*pfree;
 	char		temp[1001];
@@ -61,7 +61,7 @@ int	rest_(char *p, char **rest, char **line)
 
 	while (1)
 	{
-		ret = read(0, &temp, 1000);
+		ret = read(fd, &temp, 1000);
 		if (!ret)
 			break ;
 		temp[ret] = 0;
@@ -82,12 +82,14 @@ int	rest_(char *p, char **rest, char **line)
 	return (0);
 }
 
-int	get_next_line(char **line)
+int	get_next_line(char **line, int fd)
 {
 	static char	*rest;
 	char		*p;
 	char		*pfree;
 
+	if (read(fd, NULL, 0) < 0 || !line)
+		fatal(NULL);
 	*line = ft_strdup("");
 	if (rest)
 	{
@@ -100,13 +102,11 @@ int	get_next_line(char **line)
 			free(pfree);
 			pfree = rest;
 			rest = ft_strdup(p + 1);
-			free(pfree);
-			return (1);
+			return (ft_double_free(&pfree, NULL, 1));
 		}
 		pfree = *line;
 		*line = ft_strdup(rest);
 		ft_double_free(&pfree, &rest, 1);
-		rest = NULL;
 	}
-	return (rest_(NULL, &rest, line));
+	return (rest_(NULL, &rest, line, fd));
 }

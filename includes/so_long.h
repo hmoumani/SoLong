@@ -21,14 +21,27 @@
 # include <math.h>
 # include <limits.h>
 # include <errno.h>
+# include "get_next_line.h"
 # define FALSE 0
 # define TRUE 1
-# define Error "Error\n"
+# define ERROR "ERROR\n"
 
-typedef	struct		s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct s_data
+{
+	t_list			*lines;
+	char			**map;
+}					t_data;
+
+t_list				*ft_lstnew(void *content);
+void				ft_lstadd_back(t_list **alst, t_list *new);
+t_list				*ft_lstlast(t_list *lst);
+int					ft_lstsize(t_list *lst);
+
 
 #endif
