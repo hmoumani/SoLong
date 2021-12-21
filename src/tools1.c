@@ -45,7 +45,7 @@ void	put_my_pixel(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x >= 0 && y >= 0 && x < WIN_HEIGHT && y < WIN_HEIGHT)
+	if (x >= 0 && y >= 0 && x < WIN_HEIGHT && y < WIN_WIDTH)
 	{
 		dst = data->mlx_data + (x * data->line_length + y * (data->bpp / 8));
 		*(unsigned int *)dst = color;
@@ -63,27 +63,41 @@ void	clear_buffer(t_data *data)
 	}
 }
 
+int			get_color_brick(t_data *data, int i, int j)
+{
+	// printf("%d * %d * %d\n", i, j, data->brick.width);
+	// printf("%d * %d\n", (i * data->brick.width / (WIN_WIDTH / data->m_width)) * data->brick.width + j, data->brick.width * data->brick.height);
+	int y = j * data->brick.width / (WIN_WIDTH / data->m_width);
+	int x = i * data->brick.height / (WIN_HEIGHT / data->m_height);
+	if (data->brick.width * data->brick.height < y * data->brick.width + x)
+		return (0xaaffaa);
+	return ((unsigned int *)data->brick.addr)[x * data->brick.width + y];
+}
 
-void		ft_hor_line(t_data *data, int x, int y, int color, int size)
+void		ft_hor_line(t_data *data, int x, int y, int pos)
 {
 	int i;
 
 	i = 0;
-	while (i < size)
+	(void)pos;
+	while (i < (WIN_HEIGHT / data->m_height))
 	{
-		put_my_pixel(data, x + i, y, color);
+		// printf("%d * %d\n", pos, i);
+		put_my_pixel(data, x + i, y, get_color_brick(data, i, pos));
 		i++;
 	}
 }
 
-void		ft_square(t_data *data, int x, int y, int color)
+void		ft_square(t_data *data, int x, int y)
 {
 	int i;
 
 	i = 0;
-	while (i < 200)
+	while (i < (WIN_WIDTH / data->m_width))
 	{
-		ft_hor_line(data, x * 200, y + i * 200, color, 200);
+		// printf("%d * ", i);
+		ft_hor_line(data, x * (WIN_HEIGHT / data->m_height), (y * (WIN_WIDTH / data->m_width)) + i, i);
 		i++;
 	}
+	// exit(0);
 }

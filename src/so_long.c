@@ -124,6 +124,10 @@ void    fill_map(t_data *data, char const * const filename)
     array_map(data); 
 }
 
+void    draw_background(t_data *data)
+{
+    
+}
 
 void    ft_draw_map(t_data *data)
 {
@@ -131,17 +135,17 @@ void    ft_draw_map(t_data *data)
     int j;
 
     i = 0;
+    draw_background(data);
     while (data->map[i])
     {
         j = 0;
         while (data->map[i][j])
         {
             if (data->map[i][j] == '1')
-                ft_square(data, j, i, 0xfff);
-            else
-                ft_square(data, j, i, 0);
+                ft_square(data, i, j);
             j++;
         }
+
         i++;
     }
 }
@@ -155,11 +159,26 @@ void    ft_render(t_data *data)
 
 void    init(t_data *data)
 {
-    *data = (t_data){0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0};
+    t_texture txt;
+
+    txt = (t_texture){0, 0, 0, 0, 0, 0, 0};
+    *data = (t_data){0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, txt, txt, txt, txt, txt};
     data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, WIN_WIDTH, WIN_HEIGHT, "so_long");
     data->image = mlx_new_image(data->mlx, WIN_WIDTH, WIN_HEIGHT);
     data->mlx_data = mlx_get_data_addr(data->image, &data->bpp, &data->line_length, &data->endian);
+    data->bg.img = mlx_xpm_file_to_image(data->mlx, "images/background.xpm", &data->bg.width, &data->bg.height);
+    data->brick.img = mlx_xpm_file_to_image(data->mlx, "images/brick.xpm", &data->brick.width, &data->brick.height);
+    data->m1.img = mlx_xpm_file_to_image(data->mlx, "images/mario1.xpm", &data->m1.width, &data->m1.height);
+    data->m2.img = mlx_xpm_file_to_image(data->mlx, "images/mario2.xpm", &data->m2.width, &data->m2.height);
+    data->m3.img = mlx_xpm_file_to_image(data->mlx, "images/mario3.xpm", &data->m3.width, &data->m3.height);
+    if (!data->bg.img || !data->brick.img || !data->m1.img || !data->m2.img || !data->m3.img)
+        fatal("images files should be in images/ folder");
+    data->bg.addr = mlx_get_data_addr(data->bg.img, &data->bg.bpp, &data->bg.line_length, &data->bg.endian);
+    data->brick.addr = mlx_get_data_addr(data->brick.img, &data->brick.bpp, &data->brick.line_length, &data->brick.endian);
+    data->m1.addr = mlx_get_data_addr(data->m1.img, &data->m1.bpp, &data->m1.line_length, &data->m1.endian);
+    data->m2.addr = mlx_get_data_addr(data->m2.img, &data->m2.bpp, &data->m2.line_length, &data->m2.endian);
+    data->m3.addr = mlx_get_data_addr(data->m3.img, &data->m3.bpp, &data->m3.line_length, &data->m3.endian);
 }
 
 int main(int argc, char **argv)
