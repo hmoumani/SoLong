@@ -45,7 +45,7 @@ void	put_my_pixel(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x >= 0 && y >= 0 && x < WIN_HEIGHT && y < WIN_WIDTH)
+	if (x >= 0 && y >= 0 && x < WIN_HEIGHT && y < WIN_WIDTH && color != 1)
 	{
 		dst = data->mlx_data + (x * data->line_length + y * (data->bpp / 8));
 		*(unsigned int *)dst = color;
@@ -63,18 +63,16 @@ void	clear_buffer(t_data *data)
 	}
 }
 
-int			get_color_brick(t_data *data, int i, int j)
+int			get_color(t_data *data, int i, int j, t_texture *from)
 {
-	// printf("%d * %d * %d\n", i, j, data->brick.width);
-	// printf("%d * %d\n", (i * data->brick.width / (WIN_WIDTH / data->m_width)) * data->brick.width + j, data->brick.width * data->brick.height);
-	int y = j * data->brick.width / (WIN_WIDTH / data->m_width);
-	int x = i * data->brick.height / (WIN_HEIGHT / data->m_height);
-	if (data->brick.width * data->brick.height < y * data->brick.width + x)
-		return (0xaaffaa);
-	return ((unsigned int *)data->brick.addr)[x * data->brick.width + y];
+	int y = j * from->width / (WIN_WIDTH / data->m_width);
+	int x = i * from->height / (WIN_HEIGHT / data->m_height);
+	if (from->width * from->height < x * from->width + y)
+		return (0xeaf);
+	return ((unsigned int *)from->addr)[x * from->width + y];
 }
 
-void		ft_hor_line(t_data *data, int x, int y, int pos)
+void		ft_brick_line(t_data *data, int x, int y, int pos, t_texture *from)
 {
 	int i;
 
@@ -83,12 +81,12 @@ void		ft_hor_line(t_data *data, int x, int y, int pos)
 	while (i < (WIN_HEIGHT / data->m_height))
 	{
 		// printf("%d * %d\n", pos, i);
-		put_my_pixel(data, x + i, y, get_color_brick(data, i, pos));
+		put_my_pixel(data, x + i, y, get_color(data, i, pos, from));
 		i++;
 	}
 }
 
-void		ft_square(t_data *data, int x, int y)
+void		ft_rect(t_data *data, int x, int y, t_texture *from)
 {
 	int i;
 
@@ -96,8 +94,7 @@ void		ft_square(t_data *data, int x, int y)
 	while (i < (WIN_WIDTH / data->m_width))
 	{
 		// printf("%d * ", i);
-		ft_hor_line(data, x * (WIN_HEIGHT / data->m_height), (y * (WIN_WIDTH / data->m_width)) + i, i);
+		ft_brick_line(data, x * (WIN_HEIGHT / data->m_height), (y * (WIN_WIDTH / data->m_width)) + i, i, from);
 		i++;
 	}
-	// exit(0);
 }
