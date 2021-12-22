@@ -81,10 +81,12 @@ typedef struct s_data
 	t_texture		c5;
 	t_texture		c6;
 	t_texture		castle;
+	t_texture		img_win;
 	t_texture		*from;
 	t_texture		*coin;
 	long			time;
 	int				movements;
+	int				is_win;
 }					t_data;
 
 t_list				*ft_lstnew(void *content);

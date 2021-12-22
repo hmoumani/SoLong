@@ -133,7 +133,7 @@ int			get_color_window(int i, int j, t_texture *from)
     return ((unsigned int *)from->addr)[x * from->width + y];
 }
 
-void    draw_background(t_data *data)
+void    draw_background(t_data *data, t_texture *bg)
 {
     int i;
     int j;
@@ -145,7 +145,7 @@ void    draw_background(t_data *data)
         j = 0;
         while (j < WIN_WIDTH)
         {
-            put_my_pixel(data, i , j, get_color_window(i, j, &data->bg));
+            put_my_pixel(data, i , j, get_color_window(i, j, bg));
             ++j;
         }
         ++i;
@@ -158,7 +158,7 @@ void    ft_draw_map(t_data *data)
     int j;
 
     i = 0;
-    draw_background(data);
+    draw_background(data, &data->bg);
     while (data->map[i])
     {
         j = 0;
@@ -200,7 +200,7 @@ void    init(t_data *data)
     t_texture txt;
 
     txt = (t_texture){0, 0, 0, 0, 0, 0, 0};
-    *data = (t_data){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, 0, 0, 0, 0};
+    *data = (t_data){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, 0, 0, 0, 0, 0};
     data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, WIN_WIDTH, WIN_HEIGHT, "so_long");
     data->image = mlx_new_image(data->mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -223,6 +223,7 @@ void    init(t_data *data)
     data->c5.img = mlx_xpm_file_to_image(data->mlx, "images/coin/5.xpm", &data->c5.width, &data->c5.height);
     data->c6.img = mlx_xpm_file_to_image(data->mlx, "images/coin/6.xpm", &data->c6.width, &data->c6.height);
     data->castle.img = mlx_xpm_file_to_image(data->mlx, "images/castle/2.xpm", &data->castle.width, &data->castle.height);
+    data->img_win.img = mlx_xpm_file_to_image(data->mlx, "images/win.xpm", &data->img_win.width, &data->img_win.height);
     if (!data->bg.img || !data->brick.img || !data->m1.img || !data->u1.img || !data->u2.img || !data->d1.img || !data->d2.img || !data->r1.img || !data->r2.img || !data->l1.img || !data->l2.img || !data->c1.img || !data->c2.img || !data->c3.img || !data->c4.img || !data->c5.img || !data->c6.img)
         fatal("images files should be in images/ folder");
     data->bg.addr = mlx_get_data_addr(data->bg.img, &data->bg.bpp, &data->bg.line_length, &data->bg.endian);
@@ -243,6 +244,7 @@ void    init(t_data *data)
     data->c5.addr = mlx_get_data_addr(data->c5.img, &data->c5.bpp, &data->c5.line_length, &data->c5.endian);
     data->c6.addr = mlx_get_data_addr(data->c6.img, &data->c6.bpp, &data->c6.line_length, &data->c6.endian);
     data->castle.addr = mlx_get_data_addr(data->castle.img, &data->castle.bpp, &data->castle.line_length, &data->castle.endian);
+    data->img_win.addr = mlx_get_data_addr(data->img_win.img, &data->img_win.bpp, &data->img_win.line_length, &data->img_win.endian);
     data->from = &data->m1;
     data->coin = &data->c1;
     data->time = get_time_stamp();
@@ -256,6 +258,8 @@ void    ft_left(t_data *data)
     {
         if (data->map[data->player_x][data->player_y - 1] == 'C')
             data->coll_found--;
+        if (data->map[data->player_x][data->player_y - 1] == 'E' && data->coll_found == 0)
+            data->is_win = TRUE;
         data->map[data->player_x][data->player_y] = '0';
         data->map[data->player_x][--data->player_y] = 'P';
         data->movements++;
@@ -277,6 +281,8 @@ void    ft_right(t_data *data)
     {
         if (data->map[data->player_x][data->player_y + 1] == 'C')
             data->coll_found--;
+        if (data->map[data->player_x][data->player_y + 1] == 'E' && data->coll_found == 0)
+            data->is_win = TRUE;
         data->map[data->player_x][data->player_y] = '0';
         data->map[data->player_x][++data->player_y] = 'P';
         data->movements++;
@@ -298,7 +304,8 @@ void    ft_up(t_data *data)
     {
         if (data->map[data->player_x - 1][data->player_y] == 'C')
             data->coll_found--;
-        // data->player_x++;
+        if (data->map[data->player_x - 1][data->player_y] == 'E' && data->coll_found == 0)
+            data->is_win = TRUE;
         data->map[data->player_x][data->player_y] = '0';
         data->map[--data->player_x][data->player_y] = 'P';
         data->movements++;
@@ -320,7 +327,8 @@ void    ft_down(t_data *data)
     {
         if (data->map[data->player_x + 1][data->player_y] == 'C')
             data->coll_found--;
-        // data->player_x++;
+        if (data->map[data->player_x + 1][data->player_y] == 'E' && data->coll_found == 0)
+            data->is_win = TRUE;
         data->map[data->player_x][data->player_y] = '0';
         data->map[++data->player_x][data->player_y] = 'P';
         data->movements++;
@@ -339,15 +347,32 @@ int     ft_exit(void)
     exit(0);
 }
 
+void    ft_win(t_data *data)
+{
+    clear_buffer(data);
+    draw_background(data, &data->img_win);
+    mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
+    // print_mov_count(data);
+    print_mov_count_screen(data);
+    // long now = get_time_stamp();
+    // while (get_time_stamp() - now < 20000)
+    //     usleep(2000);
+    // exit(0);
+}
+
 int		key_press(int key, void *param)
 {
     t_data *data;
 
     data = (t_data *)param;
-    // (void)key;
 	if (key == 53)
 		ft_exit();
-	else if (key == 1)
+    if (data->is_win){
+        // print_mov_count(data);
+        print_mov_count_screen(data);
+        return (0);
+    }
+	if (key == 1)
 		ft_down(data);
 	else if (key == 13)
 		ft_up(data);
@@ -355,18 +380,18 @@ int		key_press(int key, void *param)
 		ft_left(data);
 	else if (key == 2)
 		ft_right(data);
+    if (data->is_win == TRUE){
+        ft_win(data);
+        return 0;
+    }
 	ft_render(data);
 	return (0);
 }
-#define MLX_SYNC_IMAGE_WRITABLE    1 
-#define MLX_SYNC_WIN_FLUSH_CMD     2
-#define MLX_SYNC_WIN_CMD_COMPLETED 3
-int    mlx_sync(int cmd, void *ptr);
 
 int loop(t_data *data)
 {
     static int coin_index = 0;
-    if (get_time_stamp() - data->time > 170000){
+    if (!data->is_win && get_time_stamp() - data->time > 170000){
         if (coin_index == 0)
             data->coin = &data->c1;
         else if (coin_index == 1)
