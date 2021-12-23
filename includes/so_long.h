@@ -26,7 +26,7 @@
 # define TRUE 1
 # define ERROR "Error\n"
 # define WIN_WIDTH 2100
-# define WIN_HEIGHT 500
+# define WIN_HEIGHT 800
 # include <sys/time.h>
 
 typedef struct s_list
@@ -63,6 +63,8 @@ typedef struct s_data
 	int				bpp;
 	int				line_length;
 	int				endian;
+	int				width;
+	int				heigth;
 	t_texture		bg;
 	t_texture		brick;
 	t_texture		m1;
@@ -82,11 +84,20 @@ typedef struct s_data
 	t_texture		c6;
 	t_texture		castle;
 	t_texture		img_win;
+	t_texture		img_over;
+	t_texture		f1;
+	t_texture		f2;
+	t_texture		f3;
 	t_texture		*from;
 	t_texture		*coin;
+	t_texture		*fire;
 	long			time;
+	long			time_fire;
+	long			time_gen_fire;
 	int				movements;
 	int				is_win;
+	int				num_fire;
+	int				*fires;
 }					t_data;
 
 t_list				*ft_lstnew(void *content);
@@ -101,4 +112,10 @@ void				put_my_pixel(t_data *data, int x, int y, int color);
 char				*ft_itoa(int n);
 void    			print_mov_count(t_data *data);
 void				print_mov_count_screen(t_data *data);
+void				*ft_memset(void *s, int c, size_t n);
+int					loop(t_data *data);
+void				ft_render(t_data *data);
+long				get_time_stamp(void);
+void    			render_fire(t_data *data);
+void				check_death(t_data *data);
 #endif

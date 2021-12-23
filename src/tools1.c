@@ -91,9 +91,8 @@ void		ft_rect(t_data *data, int x, int y, t_texture *from)
 	int i;
 
 	i = 0;
-	while (i < (WIN_WIDTH / data->m_width))
+	while (i < WIN_WIDTH / data->m_width)
 	{
-		// printf("%d * ", i);
 		ft_brick_line(data, x * (WIN_HEIGHT / data->m_height), (y * (WIN_WIDTH / data->m_width)) + i, i, from);
 		i++;
 	}

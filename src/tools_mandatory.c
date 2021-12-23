@@ -21,3 +21,19 @@ void    print_mov_count_screen(t_data *data)
 {
     (void)data;
 }
+
+int loop(t_data *data)
+{
+    (void)data;
+    return (0);
+}
+
+void    generate_fire(t_data *data)
+{
+    (void)data;
+}
+
+void    render_fire(t_data *data)
+{
+    (void)data;
+}

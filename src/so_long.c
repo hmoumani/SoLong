@@ -121,7 +121,16 @@ void    fill_map(t_data *data, char const * const filename)
             break ;
         ft_lstadd_back(&data->lines, ft_lstnew(line));
     }
-    array_map(data); 
+    array_map(data);
+    data->num_fire = data->m_height - 2;
+    data->fires = ft_malloc(data->num_fire * sizeof(int));
+    int i = 0;
+    while (i < data->num_fire)
+        if (i % 2 == 0)
+            data->fires[i++] = -1;
+    else
+        data->fires[i++] = -4;
+            
 }
 
 int			get_color_window(int i, int j, t_texture *from)
@@ -139,7 +148,6 @@ void    draw_background(t_data *data, t_texture *bg)
     int j;
 
     i = 0;
-    // printf("hello from there\n");
     while (i < WIN_HEIGHT)
     {
         j = 0;
@@ -183,8 +191,6 @@ void    ft_render(t_data *data)
     clear_buffer(data);
     ft_draw_map(data);
     mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
-    // print_mov_count(data);
-    // ft_draw_player(data);
 }
 
 long	get_time_stamp(void)
@@ -200,7 +206,7 @@ void    init(t_data *data)
     t_texture txt;
 
     txt = (t_texture){0, 0, 0, 0, 0, 0, 0};
-    *data = (t_data){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, 0, 0, 0, 0, 0};
+    *data = (t_data){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, txt, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, WIN_WIDTH, WIN_HEIGHT, "so_long");
     data->image = mlx_new_image(data->mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -222,9 +228,13 @@ void    init(t_data *data)
     data->c4.img = mlx_xpm_file_to_image(data->mlx, "images/coin/4.xpm", &data->c4.width, &data->c4.height);
     data->c5.img = mlx_xpm_file_to_image(data->mlx, "images/coin/5.xpm", &data->c5.width, &data->c5.height);
     data->c6.img = mlx_xpm_file_to_image(data->mlx, "images/coin/6.xpm", &data->c6.width, &data->c6.height);
+    data->f1.img = mlx_xpm_file_to_image(data->mlx, "images/fire/1.xpm", &data->f1.width, &data->f1.height);
+    data->f2.img = mlx_xpm_file_to_image(data->mlx, "images/fire/2.xpm", &data->f2.width, &data->f2.height);
+    data->f3.img = mlx_xpm_file_to_image(data->mlx, "images/fire/3.xpm", &data->f3.width, &data->f3.height);
     data->castle.img = mlx_xpm_file_to_image(data->mlx, "images/castle/2.xpm", &data->castle.width, &data->castle.height);
     data->img_win.img = mlx_xpm_file_to_image(data->mlx, "images/win.xpm", &data->img_win.width, &data->img_win.height);
-    if (!data->bg.img || !data->brick.img || !data->m1.img || !data->u1.img || !data->u2.img || !data->d1.img || !data->d2.img || !data->r1.img || !data->r2.img || !data->l1.img || !data->l2.img || !data->c1.img || !data->c2.img || !data->c3.img || !data->c4.img || !data->c5.img || !data->c6.img)
+    data->img_over.img = mlx_xpm_file_to_image(data->mlx, "images/over.xpm", &data->img_over.width, &data->img_over.height);
+    if (!data->bg.img || !data->brick.img || !data->m1.img || !data->u1.img || !data->u2.img || !data->d1.img || !data->img_win.img || !data->img_over.img || !data->d2.img || !data->r1.img || !data->r2.img || !data->l1.img || !data->l2.img || !data->c1.img || !data->c2.img || !data->c3.img || !data->c4.img || !data->c5.img || !data->c6.img || !data->f1.img || !data->f2.img || !data->f3.img)
         fatal("images files should be in images/ folder");
     data->bg.addr = mlx_get_data_addr(data->bg.img, &data->bg.bpp, &data->bg.line_length, &data->bg.endian);
     data->brick.addr = mlx_get_data_addr(data->brick.img, &data->brick.bpp, &data->brick.line_length, &data->brick.endian);
@@ -243,17 +253,23 @@ void    init(t_data *data)
     data->c4.addr = mlx_get_data_addr(data->c4.img, &data->c4.bpp, &data->c4.line_length, &data->c4.endian);
     data->c5.addr = mlx_get_data_addr(data->c5.img, &data->c5.bpp, &data->c5.line_length, &data->c5.endian);
     data->c6.addr = mlx_get_data_addr(data->c6.img, &data->c6.bpp, &data->c6.line_length, &data->c6.endian);
+    data->f1.addr = mlx_get_data_addr(data->f1.img, &data->f1.bpp, &data->f1.line_length, &data->f1.endian);
+    data->f2.addr = mlx_get_data_addr(data->f2.img, &data->f2.bpp, &data->f2.line_length, &data->f2.endian);
+    data->f3.addr = mlx_get_data_addr(data->f3.img, &data->f3.bpp, &data->f3.line_length, &data->f3.endian);
     data->castle.addr = mlx_get_data_addr(data->castle.img, &data->castle.bpp, &data->castle.line_length, &data->castle.endian);
     data->img_win.addr = mlx_get_data_addr(data->img_win.img, &data->img_win.bpp, &data->img_win.line_length, &data->img_win.endian);
+    data->img_over.addr = mlx_get_data_addr(data->img_over.img, &data->img_over.bpp, &data->img_over.line_length, &data->img_over.endian);
     data->from = &data->m1;
     data->coin = &data->c1;
+    data->fire = &data->f1;
     data->time = get_time_stamp();
+    data->time_fire = data->time;
+    data->time_gen_fire = data->time_fire;
 }
 
 void    ft_left(t_data *data)
 {
     static int pos = 0;
-    // printf("%d * %d * %c\n", data->player_x, data->player_y, data->map[data->player_x][data->player_y + 1]);
     if (data->player_y - 1 > 0 && data->map[data->player_x][data->player_y - 1] != '1' && (data->map[data->player_x][data->player_y - 1] != 'E' || data->coll_found == 0))
     {
         if (data->map[data->player_x][data->player_y - 1] == 'C')
@@ -276,7 +292,6 @@ void    ft_left(t_data *data)
 void    ft_right(t_data *data)
 {
     static int pos = 0;
-    // printf("%d * %d * %c\n", data->player_x, data->player_y, data->map[data->player_x][data->player_y + 1]);
     if (data->player_y + 1 < data->m_width && data->map[data->player_x][data->player_y + 1] != '1' && (data->map[data->player_x][data->player_y + 1] != 'E' || data->coll_found == 0))
     {
         if (data->map[data->player_x][data->player_y + 1] == 'C')
@@ -299,7 +314,6 @@ void    ft_right(t_data *data)
 void    ft_up(t_data *data)
 {
     static int pos = 0;
-    // printf("%d * %d * %c\n", data->player_x, data->player_y, data->map[data->player_x][data->player_y + 1]);
     if (data->player_x - 1 > 0 && data->map[data->player_x - 1][data->player_y] != '1' && (data->map[data->player_x - 1][data->player_y] != 'E' || data->coll_found == 0))
     {
         if (data->map[data->player_x - 1][data->player_y] == 'C')
@@ -322,7 +336,6 @@ void    ft_up(t_data *data)
 void    ft_down(t_data *data)
 {
     static int pos = 0;
-    // printf("%d * %d * %c\n", data->player_x, data->player_y, data->map[data->player_x][data->player_y + 1]);
     if (data->player_x + 1 < data->m_width && data->map[data->player_x + 1][data->player_y] != '1' && (data->map[data->player_x + 1][data->player_y] != 'E' || data->coll_found == 0))
     {
         if (data->map[data->player_x + 1][data->player_y] == 'C')
@@ -352,12 +365,31 @@ void    ft_win(t_data *data)
     clear_buffer(data);
     draw_background(data, &data->img_win);
     mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
+    print_mov_count_screen(data);
+}
+
+void    ft_loss(t_data *data)
+{
+    data->is_win = -1;
+    clear_buffer(data);
+    draw_background(data, &data->img_over);
+    mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
     // print_mov_count(data);
     print_mov_count_screen(data);
-    // long now = get_time_stamp();
-    // while (get_time_stamp() - now < 20000)
-    //     usleep(2000);
-    // exit(0);
+
+}
+
+void    check_death(t_data *data)
+{
+    int i;
+
+    i = 0;
+    while (i < data->num_fire)
+    {
+        if (i == data->player_x - 1 && data->fires[i] == data->player_y)
+            ft_loss(data);
+        ++i;
+    }
 }
 
 int		key_press(int key, void *param)
@@ -380,40 +412,16 @@ int		key_press(int key, void *param)
 		ft_left(data);
 	else if (key == 2)
 		ft_right(data);
-    if (data->is_win == TRUE){
+    check_death(data);
+    if (data->is_win){
+        if (data->is_win == -1)
+            return (0);
         ft_win(data);
         return 0;
     }
 	ft_render(data);
+    render_fire(data);
 	return (0);
-}
-
-int loop(t_data *data)
-{
-    static int coin_index = 0;
-    if (!data->is_win && get_time_stamp() - data->time > 170000){
-        if (coin_index == 0)
-            data->coin = &data->c1;
-        else if (coin_index == 1)
-            data->coin = &data->c2;
-        else if (coin_index == 2)
-            data->coin = &data->c3;
-        else if (coin_index == 3)
-            data->coin = &data->c4;
-        else if (coin_index == 4)
-            data->coin = &data->c5;
-        else if (coin_index == 5)
-            data->coin = &data->c6;
-        data->time = get_time_stamp();
-        coin_index++;
-        coin_index %= 6;
-        ft_render(data);
-        print_mov_count_screen(data);
-        // printf("hrweihfglwgn %ld * %ld\n", get_time_stamp(), data->time);
-    }
-    // mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
-    // sleep(1000);
-    return (0);
 }
 
 int main(int argc, char **argv)
@@ -427,18 +435,8 @@ int main(int argc, char **argv)
     mlx_hook(data.win, 2, 1L << 0, key_press, (void *)&data);
 	mlx_hook(data.win, 17, 1L << 17, ft_exit, (void *)0);
     ft_render(&data);
-    // while (1){
-        // mlx_sync(MLX_SYNC_WIN_CMD_COMPLETED, data.win);
-        // mlx_sync(MLX_SYNC_IMAGE_WRITABLE, data.image);
-        // mlx_do_sync(data.mlx);
-        // mlx_put_image_to_window(data.mlx, data.win, data.image, 0, 0);
-        // mlx_sync(MLX_SYNC_WIN_FLUSH_CMD, data.win);
-        // mlx_sync(MLX_SYNC_WIN_CMD_COMPLETED, data.win);
     mlx_put_image_to_window(data.mlx, data.win, data.image, 0, 0);
     mlx_loop_hook(data.mlx, loop, &data);
 
     mlx_loop(data.mlx);
-
-        // while (1) sleep(200);
-    // }
 }
