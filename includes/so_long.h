@@ -88,6 +88,7 @@ typedef struct s_data
 	t_texture		f1;
 	t_texture		f2;
 	t_texture		f3;
+	t_texture		*player;
 	t_texture		*from;
 	t_texture		*coin;
 	t_texture		*fire;
@@ -118,4 +119,6 @@ void				ft_render(t_data *data);
 long				get_time_stamp(void);
 void    			render_fire(t_data *data);
 void				check_death(t_data *data);
+void				draw_fire(t_data *data);
+void				generate_fire(t_data *data);
 #endif

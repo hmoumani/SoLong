@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools_mandatory.c                                  :+:      :+:    :+:   */
+/*   tools1_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/22 06:27:29 by hmoumani          #+#    #+#             */
-/*   Updated: 2021/12/22 06:27:33 by hmoumani         ###   ########.fr       */
+/*   Created: 2021/12/23 06:31:43 by hmoumani          #+#    #+#             */
+/*   Updated: 2021/12/23 06:31:47 by hmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void	print_mov_count(t_data *data)
+void	draw_fire(t_data *data)
 {
-	printf("your movements count: %d\n", data->movements);
-}
+	static int	fire_index = 0;
 
-void	print_mov_count_screen(t_data *data)
-{
-	(void)data;
-}
-
-int	loop(t_data *data)
-{
-	(void)data;
-	return (0);
-}
-
-void	generate_fire(t_data *data)
-{
-	(void)data;
-}
-
-void	render_fire(t_data *data)
-{
-	(void)data;
+	generate_fire(data);
+	if (!data->is_win && get_time_stamp() - data->time_fire > 170000)
+	{
+		if (fire_index == 0)
+			data->fire = &data->f1;
+		else if (fire_index == 1)
+			data->fire = &data->f2;
+		else if (fire_index == 2)
+			data->fire = &data->f3;
+		data->time_fire = get_time_stamp();
+		fire_index++;
+		fire_index %= 3;
+		render_fire(data);
+		check_death(data);
+	}
 }

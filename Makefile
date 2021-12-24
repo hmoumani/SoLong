@@ -1,7 +1,7 @@
 NAME			:= so_long
 NAME_BONUS		:= so_long_bonus
-SRC				:= so_long.c tools1.c ft_lstadd_back_bonus.c ft_lstclear_bonus.c ft_lstlast_bonus.c ft_lstnew_bonus.c ft_lstsize_bonus.c ft_itoa.c tools_mandatory.c
-SRC_BONUS		:= so_long.c tools1.c ft_lstadd_back_bonus.c ft_lstclear_bonus.c ft_lstlast_bonus.c ft_lstnew_bonus.c ft_lstsize_bonus.c ft_itoa.c tools_bonus.c
+SRC				:= so_long.c tools1.c tools2.c ft_lstadd_back_bonus.c ft_lstclear_bonus.c ft_lstlast_bonus.c ft_lstnew_bonus.c ft_lstsize_bonus.c ft_itoa.c tools_mandatory.c
+SRC_BONUS		:= so_long.c tools1.c tools2.c ft_lstadd_back_bonus.c ft_lstclear_bonus.c ft_lstlast_bonus.c ft_lstnew_bonus.c ft_lstsize_bonus.c ft_itoa.c tools_bonus.c tools1_bonus.c
 SRC				:= $(addprefix src/,$(SRC))
 SRC_BONUS		:= $(addprefix src/,$(SRC_BONUS))
 FLAGS			:= -Wall -Wextra -Werror -lmlx -framework OpenGl -framework AppKit
