@@ -16,9 +16,6 @@ $(NAME):$(SRC)
 debug:$(SRC)
 	gcc $(FLAGS) -fsanitize=address -g $(SRC) -Iincludes -o $(NAME)
 
-prof:$(SRC)
-	gcc  -pg -g3  -fsanitize=address  $(SRC) -Iincludes -o $(NAME)
-
 clean:
 	@rm -rf $(NAME)
 
@@ -27,7 +24,7 @@ fclean:clean clean_bonus
 re: clean all
 
 $(NAME_BONUS):$(SRC_BONUS)
-	gcc  $(FLAGS) $(SRC_BONUS) -Iincludes -o $(NAME_BONUS)
+	gcc  $(FLAGS)  $(SRC_BONUS) -Iincludes -o $(NAME_BONUS)
 
 bonus: $(NAME_BONUS)
 

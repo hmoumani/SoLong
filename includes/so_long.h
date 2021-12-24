@@ -21,13 +21,13 @@
 # include <math.h>
 # include <limits.h>
 # include <errno.h>
+# include <sys/time.h>
 # include "get_next_line.h"
 # define FALSE 0
 # define TRUE 1
 # define ERROR "Error\n"
 # define WIN_WIDTH 2100
 # define WIN_HEIGHT 800
-# include <sys/time.h>
 
 typedef struct s_list
 {
@@ -133,4 +133,5 @@ void				ft_down(t_data *data);
 int					ft_exit(void);
 void				*xpm(void *mlx_ptr, char *file, int *width, int *height);
 void				*mlx_data(void *img_ptr, int *pp, int *size, int *endian);
+int					ft_is_end_with(char *s, char *s1);
 #endif

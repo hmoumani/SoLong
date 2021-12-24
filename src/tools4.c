@@ -21,12 +21,12 @@ void	fill_map(t_data *data, char const *const filename)
 
 	line = NULL;
 	ret = 1;
+	if (!ft_is_end_with((char *)filename, (char *)".ber"))
+		fatal("Bad extension");
 	fd = open(filename, O_RDONLY);
 	while (ret > 0)
 	{
 		ret = get_next_line(&line, fd);
-		if (ret < 0)
-			break ;
 		ft_lstadd_back(&data->lines, ft_lstnew(line));
 	}
 	array_map(data);

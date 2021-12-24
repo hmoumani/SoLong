@@ -26,3 +26,23 @@ int	ft_lstsize(t_list *lst)
 	}
 	return (i);
 }
+
+int	ft_is_end_with(char *s, char *s1)
+{
+	int	len;
+	int	i;
+	int	len1;
+
+	len = ft_strlen(s);
+	len1 = ft_strlen(s1);
+	i = 0;
+	while (len - i >= 0)
+	{
+		if (s[len - i] != s1[len1 - i])
+			return (0);
+		if (i == len1)
+			return (1);
+		i++;
+	}
+	return (1);
+}

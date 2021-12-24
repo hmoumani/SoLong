@@ -85,8 +85,8 @@ int	loop(t_data *data)
 		coin_index %= 6;
 		ft_render(data);
 		render_fire(data);
-		print_mov_count_screen(data);
 	}
+	print_mov_count_screen(data);
 	draw_fire(data);
 	return (0);
 }
