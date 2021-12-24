@@ -17,7 +17,7 @@ void	print_mov_count(t_data *data)
 	(void)data;
 }
 
-void	print_mov_count_screen(t_data *data)
+int	print_mov_count_screen(t_data *data)
 {
 	char	*s;
 
@@ -26,6 +26,7 @@ void	print_mov_count_screen(t_data *data)
 		fatal("malloc failed!");
 	mlx_string_put(data->mlx, data->win, 10, 10, 0x258DDF, s);
 	free(s);
+	return (0);
 }
 
 void	render_fire(t_data *data)

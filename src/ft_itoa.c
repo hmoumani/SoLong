@@ -12,7 +12,7 @@
 
 #include <so_long.h>
 
-static	int		ft_getnumbersize(long n)
+static	int	ft_getnumbersize(long n)
 {
 	int	i;
 	int	x;
@@ -34,9 +34,9 @@ static	int		ft_getnumbersize(long n)
 	return (i);
 }
 
-static	int		ft_getdigit(long n, int pos)
+static	int	ft_getdigit(long n, int pos)
 {
-	int d;
+	int	d;
 
 	d = 1;
 	if (n < 0)
@@ -49,7 +49,7 @@ static	int		ft_getdigit(long n, int pos)
 	return (n % 10);
 }
 
-char			*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	int		size;
 	int		i;
@@ -67,7 +67,7 @@ char			*ft_itoa(int n)
 		p[size - i - 1] = ft_getdigit(nb, i) + 48;
 		i++;
 	}
-    p[i] = 0;
+	p[i] = 0;
 	if (nb < 0)
 		*p = '-';
 	return (p);
@@ -88,3 +88,10 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
+long	get_time_stamp(void)
+{
+	struct timeval	timev;
+
+	gettimeofday(&timev, NULL);
+	return (timev.tv_sec * (long)1000000 + timev.tv_usec);
+}

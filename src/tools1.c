@@ -47,7 +47,7 @@ void	put_my_pixel(t_data *data, int x, int y, int color)
 
 	if (x >= 0 && y >= 0 && x < WIN_HEIGHT && y < WIN_WIDTH && color != 1)
 	{
-		dst = data->mlx_data + (x * data->line_length + y * (data->bpp / 8));
+		dst = data->mlx_data + (x * data->ln_len + y * (data->bpp / 8));
 		*(unsigned int *)dst = color;
 	}
 }
@@ -57,7 +57,7 @@ void	clear_buffer(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->line_length)
+	while (i < data->ln_len)
 	{
 		data->mlx_data[i++] = 0;
 	}

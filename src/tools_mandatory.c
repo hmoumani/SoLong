@@ -17,9 +17,10 @@ void	print_mov_count(t_data *data)
 	printf("your movements count: %d\n", data->movements);
 }
 
-void	print_mov_count_screen(t_data *data)
+int	print_mov_count_screen(t_data *data)
 {
 	(void)data;
+	return (0);
 }
 
 int	loop(t_data *data)

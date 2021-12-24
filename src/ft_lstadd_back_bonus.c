@@ -14,7 +14,7 @@
 
 void	ft_lstadd_back(t_list **alst, t_list *new)
 {
-	t_list *last;
+	t_list	*last;
 
 	if (*alst == NULL)
 		*alst = new;
@@ -23,4 +23,14 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 		last = ft_lstlast(*alst);
 		last->next = new;
 	}
+}
+
+void	*xpm(void *mlx_ptr, char *filename, int *width, int *height)
+{
+	return (mlx_xpm_file_to_image(mlx_ptr, filename, width, height));
+}
+
+void	*mlx_data(void *img_ptr, int *bits_per_pixel, int *size, int *endian)
+{
+	return (mlx_get_data_addr(img_ptr, bits_per_pixel, size, endian));
 }

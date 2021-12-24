@@ -35,14 +35,14 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-typedef struct		s_texture
+typedef struct s_texture
 {
 	void			*img;
 	char			*addr;
 	int				height;
 	int				width;
 	int				bpp;
-	int				line_length;
+	int				ln_len;
 	int				endian;
 }					t_texture;
 
@@ -61,7 +61,7 @@ typedef struct s_data
 	int				found_exit;
 	int				coll_found;
 	int				bpp;
-	int				line_length;
+	int				ln_len;
 	int				endian;
 	int				width;
 	int				heigth;
@@ -111,14 +111,26 @@ void				clear_buffer(t_data *data);
 int					get_color(t_data *data, int i, int j, t_texture *from);
 void				put_my_pixel(t_data *data, int x, int y, int color);
 char				*ft_itoa(int n);
-void    			print_mov_count(t_data *data);
-void				print_mov_count_screen(t_data *data);
+void				print_mov_count(t_data *data);
+int					print_mov_count_screen(t_data *data);
 void				*ft_memset(void *s, int c, size_t n);
 int					loop(t_data *data);
 void				ft_render(t_data *data);
 long				get_time_stamp(void);
-void    			render_fire(t_data *data);
+void				render_fire(t_data *data);
 void				check_death(t_data *data);
 void				draw_fire(t_data *data);
 void				generate_fire(t_data *data);
+void				init(t_data *data);
+void				array_map(t_data *data);
+void				draw_background(t_data *data, t_texture *bg);
+void				ft_draw_map(t_data *data);
+void				fill_map(t_data *data, char const *const filename);
+void				ft_left(t_data *data);
+void				ft_right(t_data *data);
+void				ft_up(t_data *data);
+void				ft_down(t_data *data);
+int					ft_exit(void);
+void				*xpm(void *mlx_ptr, char *file, int *width, int *height);
+void				*mlx_data(void *img_ptr, int *pp, int *size, int *endian);
 #endif

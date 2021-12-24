@@ -14,7 +14,7 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	t_list *curr;
+	t_list	*curr;
 
 	if (!lst)
 		return (NULL);
